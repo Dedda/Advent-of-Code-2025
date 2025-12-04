@@ -14,21 +14,19 @@ fn part_2() -> usize {
 }
 
 fn banks() -> Vec<Vec<usize>> {
-    INPUT.lines().map(|line| line.chars()
+    INPUT.lines()
+        .map(|line| line.chars()
             .map(|c| c.to_digit(10).unwrap() as usize)
-            .collect::<Vec<_>>())
-            .collect()
+            .collect())
+        .collect()
 }
 
-fn strongest_n_ordered(n: usize, bank: &[usize]) -> usize {
-    let mut acc = 0;
-    let mut remaining = bank;
-    for power in 1..n+1 {
-        let power = n - power;
-        let slice = &remaining[..remaining.len() - power];
-        let max = slice.iter().max().unwrap();
+fn strongest_n_ordered(n: usize, bank: &[usize]) -> usize {    
+    (1..=n).fold((0, bank), |(mut acc, mut remaining), power| {
+        let power = n - power;        
+        let max = remaining[..remaining.len() - power].iter().max().unwrap();
         remaining = &remaining[remaining.iter().position(|n| n == max).unwrap()+1..];
         acc += max * 10_usize.pow(power as u32);
-    }
-    acc
+        (acc, remaining)
+    }).0    
 }

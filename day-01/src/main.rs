@@ -6,51 +6,31 @@ fn main() {
 }
 
 fn part_1() -> usize{
-    let mut dial = 50;
-    let mut zeroes = 0;
-    for amount in movements() {
-        dial += amount;
-        dial = dial.rem_euclid(100);
+    movements().iter().fold((50, 0), |(dial, mut zeroes), amount| {
+        let dial = (dial + amount).rem_euclid(100);        
         if dial == 0 {
-            zeroes += 1;
-        }
-    }
-    zeroes
+            zeroes += 1
+        };
+        (dial, zeroes)
+    }).1
 }
 
 fn part_2() -> usize {
-    let mut dial = 50;
-    let mut zeroes = 0;
-    for amount in movements() {
-        match amount.signum() {
-            1 => for _ in 0..amount {
-                dial += 1;
-                dial %= 100;
-                if dial == 0 {
-                    zeroes += 1;
-                }
-            },
-            -1 => for _ in 0..amount.abs() {
-                dial -= 1;
-                if dial < 0 {
-                    dial += 100;
-                }
-                if dial == 0 {
-                    zeroes += 1;
-                }
-            },
-            _ => {},
-        }
-    }
-    zeroes
+    movements().iter().fold((50, 0), |(dial, zeroes), amount| {
+        (0..amount.abs()).fold((dial, zeroes), |(mut dial, mut zeroes), _| {
+            dial += amount.signum();
+            dial = dial.rem_euclid(100);
+            if dial == 0 {
+                zeroes += 1;
+            }
+            (dial, zeroes)
+        })
+    }).1
 }
 
 fn movements() -> Vec<i32> {
-    INPUT.lines().map(|line| {
-        let mut amount = line[1..].parse::<i32>().expect("input not a number!");
-        if line.starts_with('L') {
-            amount *= -1;
-        }
-        amount
-    }).collect()
+    INPUT.lines()
+        .map(|line| (line.chars().next().unwrap(), line[1..].parse::<i32>().unwrap()))
+        .map(|(c, amount)| if c == 'L' { -amount } else { amount })
+        .collect()
 }
