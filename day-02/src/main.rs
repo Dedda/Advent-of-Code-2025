@@ -18,18 +18,18 @@ fn part_1() -> usize {
 fn part_2() -> usize {
     ranges().into_iter()
         .flat_map(|(first, last)| (first..=last)
-            .map(|i| format!("{i}"))
-            .filter(|s| is_invalid_2(s)))            
-        .map(|s| s.parse::<usize>().unwrap()).sum()
+            .map(|i| (i, i.to_string()))
+            .filter(|(_, s)| is_invalid_2(s)))            
+        .map(|(i, _)| i).sum()
 }
 
 fn is_invalid_2(s: &str) -> bool {
-    let len = s.len();
-    (1..=len/2)
-        .map(|i| &s[..i])
-        .filter(|e| s.match_indices(e).nth(1).is_some())
-        .map(|e| s.replace(e, ""))
-        .any(|s| s.is_empty())
+    let s_len = s.len();
+    (1..=s_len/2)
+        .filter(|e_len| s_len.is_multiple_of(*e_len))            
+        .any(|e_len| 
+            (1..s_len/e_len).all(|n| s[..e_len] == s[n*e_len..(n+1)*e_len])
+        )
 }
 
 fn ranges() -> Vec<(usize, usize)> {
