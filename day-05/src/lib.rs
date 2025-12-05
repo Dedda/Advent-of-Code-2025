@@ -28,19 +28,22 @@ impl FreshRange {
     }
 }
 
-fn main() {
-    println!("Part 1: {}", part_1(INPUT));
-    println!("Part 2: {}", part_2(INPUT));
+pub fn part_1() -> usize {
+    p1(INPUT)
 }
 
-fn part_1(input: &str) -> usize {
+fn p1(input: &str) -> usize {
     let mut parts = input.split("\n\n");
     let ranges = parse_ranges(parts.next().unwrap());
     let ingredients = parts.next().unwrap().lines().map(|x| x.parse::<usize>().unwrap());
     ingredients.filter(|x| ranges.iter().any(|r| r.contains(*x))).count()
 }
 
-fn part_2(input: &str) -> usize {
+pub fn part_2() -> usize {
+    p2(INPUT)
+}
+
+fn p2(input: &str) -> usize {
     let mut parts = input.split("\n\n");
     let mut ranges = parse_ranges(parts.next().unwrap());
     ranges.sort();
@@ -63,7 +66,7 @@ fn parse_ranges(input: &str) -> Vec<FreshRange> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{part_1, part_2};
+    use crate::{p1, p2};
 
     const INPUT: &str = r#"3-5
 10-14
@@ -79,12 +82,12 @@ mod tests {
 "#;
 
     #[test]
-    fn p1() {
-        assert_eq!(3, part_1(INPUT));
+    fn part_1() {
+        assert_eq!(3, p1(INPUT));
     }
 
     #[test]
-    fn p2() {
-        assert_eq!(14, part_2(INPUT));
+    fn part_2() {
+        assert_eq!(14, p2(INPUT));
     }
 }

@@ -4,11 +4,8 @@ Prerequisite: Copy your input data into a file `src/input.txt` inside the module
 
 Build all with: `$> cargo build --release`
 
-Run all with:
+Run all with: `$> cargo run --release`
 
-```sh
-for f in target/release/day-??; do
-    echo $f
-    $f
-done
-```
+Enable timing: `$> cargo run --release -- -t`
+
+Only run specific days: `$> cargo run --release -- -d 2,3`

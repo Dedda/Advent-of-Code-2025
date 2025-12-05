@@ -2,18 +2,21 @@ const INPUT: &str = include_str!("input.txt");
 
 type Location<T> = (T, T);
 
-fn main() {
-    println!("Part 1: {}", part_1());
-    println!("Part 2: {}", part_2());
+pub fn part_1() -> usize {
+    p1(INPUT)
 }
 
-fn part_1() -> usize {
-    let chars = char_map(INPUT);
+fn p1(input: &str) -> usize {
+    let chars = char_map(input);
     accessible_rolls(&chars).len()
 }
 
-fn part_2() -> usize {
-    let mut chars = char_map(INPUT);
+pub fn part_2() -> usize {
+    p2(INPUT)
+}
+
+fn p2(input: &str) -> usize {
+    let mut chars = char_map(input);
     let mut removed = 0;
     loop {
         let for_removal = accessible_rolls(&chars);
@@ -68,4 +71,30 @@ fn clamp_location((x, y): Location<isize>, width: usize, height: usize) -> Locat
         x.clamp(0, width as isize - 1) as usize,
         y.clamp(0, height as isize - 1) as usize
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{p1, p2};
+
+    const INPUT: &str = r#"..@@.@@@@.
+@@@.@.@.@@
+@@@@@.@.@@
+@.@@@@..@.
+@@.@@@@.@@
+.@@@@@@@.@
+.@.@.@.@@@
+@.@@@.@@@@
+.@@@@@@@@.
+@.@.@@@.@."#;
+
+    #[test]
+    fn part_1() {
+        assert_eq!(13, p1(INPUT));
+    }
+
+    #[test]
+    fn part_2() {
+        assert_eq!(43, p2(INPUT));
+    }
 }
