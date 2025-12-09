@@ -13,7 +13,7 @@ type ChallengeFn = fn() -> usize;
 
 fn main() {
     let args = Arguments::parse();
-    let funs: [(ChallengeFn, ChallengeFn); 7] = [
+    let funs: [(ChallengeFn, ChallengeFn); 8] = [
         (day_01::part_1, day_01::part_2),
         (day_02::part_1, day_02::part_2),
         (day_03::part_1, day_03::part_2),
@@ -21,6 +21,7 @@ fn main() {
         (day_05::part_1, day_05::part_2),
         (day_06::part_1, day_06::part_2),
         (day_07::part_1, day_07::part_2),
+        (day_08::part_1, day_08::part_2),
     ];
     let timer = if args.time {
         let mut timer = Timer::new();
